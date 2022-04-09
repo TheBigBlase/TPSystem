@@ -1,8 +1,7 @@
 # TP 2 (fork)
 
 ### make
-J'ai fait un makefile, pour tester les questions 1-4, il faut executer
-`make run` et pour la Q5 `make runq5`
+J'ai fait un makefile, il faut d'abbord executer `make init`. Pour tester les questions 1-4, il faut executer `make run` et pour la Q5 `make runq5`
 
 ### Q1 : 
 On doit faire une chaine de N processus : 
