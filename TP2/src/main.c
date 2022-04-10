@@ -11,46 +11,53 @@ void q4();
 void q5(int, char *[]);
 
 int main(int argc, char* argv[]){
-	printf("#################Q1#################\n");
-	q1(atoi(argv[1]));
-	//printf("#################Q2#################\n");
-	//q2(atoi(argv[1]));
+	//printf("#################Q1#################\n");
+	//q1(atoi(argv[1]));
+	printf("#################Q2#################\n");
+	q2(atoi(argv[1]));
 	printf("#################Q3#################\n");
 	q3();
-	printf("#################Q4#################\n");
-	q4();
+	//printf("#################Q4#################\n");
+	//q4();
 	//printf("#################Q5#################\n");
 	//q5(argc - 2, argv);
 }
 
 void q1(int n){
-	pid_t pid = 0;
-	for(short k = 0; k < n ; k++){
-		if(pid == 0){
+	pid_t pid = 0;//not 0
+	short k;//we need k outside the loop's scope
+	for(k = 0; k < n ; k++){
+		if((pid = fork()) == 0){//fancy fork
 			printf("getpid %d parent %d: k %d\n", getpid(), getppid(), k);
-			pid = fork();
+		}
+		else {
+			break;
 		}
 	}
-	while(wait(NULL)>0){exit(0);};
+	wait(NULL);
+	if(k > 0)
+		exit(0);//eyy it works now
 	//sleep(5); //for pstree / htop observations
-	//sleep(30);
 }
 
 void q2(int n){
-	pid_t pid1 =0;
-	pid_t pid2 =0;
-	for(short k = 0 ; k < n ; k++){//depth
+	pid_t pid1;
+	pid_t pid2;
+	short k; //same as Q1
+	for(k = 0 ; k < n ; k++){//depth
 		pid1 = fork();
+		printf("getpid %d parent %d: k %d\n", getpid(), getppid(), k);
 		if(pid1 != 0){
 			pid2 = fork();
+			printf("getpid %d parent %d: k %d\n", getpid(), getppid(), k);
 			if(pid2 != 0){
-				while(wait(NULL)>0);//doesnt work ?
-				exit(0);
+				break;
 			}
-			//while(wait(NULL)>0);//doesnt work ?
 		}
 	} 
-	sleep(10);
+	while(wait(NULL)>0);//wait for both children
+	if(k > 0)
+		exit(0);
 }
 
 void q3(){
